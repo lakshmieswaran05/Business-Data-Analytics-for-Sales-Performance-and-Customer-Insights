@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Data Analytics - Sales & Customer Insights</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Navigation Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <i class="fa-solid fa-chart-line logo-icon"></i>
+                <div class="header-titles">
+                    <h1>Business Data Analytics for Sales Performance & Customer Insights</h1>
+                    <p class="subtitle">Internship Final Project Dashboard</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="badge">
+                    <span class="badge-dot"></span>
+                    <span id="data-status">Loading Dataset...</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Body -->
+        <div class="app-body">
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar">
+                <nav class="nav-menu">
+                    <button class="nav-item active" data-tab="overview">
+                        <i class="fa-solid fa-gauge"></i>
+                        <span>Overview Dashboard</span>
+                    </button>
+                    <button class="nav-item" data-tab="sales">
+                        <i class="fa-solid fa-chart-simple"></i>
+                        <span>Sales Analysis</span>
+                    </button>
+                    <button class="nav-item" data-tab="customers">
+                        <i class="fa-solid fa-users"></i>
+                        <span>Customer Insights</span>
+                    </button>
+                    <button class="nav-item" data-tab="products">
+                        <i class="fa-solid fa-box"></i>
+                        <span>Product Performance</span>
+                    </button>
+                </nav>
+                <div class="sidebar-footer">
+                    <p>Designed by Lakshmi</p>
+                    <p class="version">v1.0.0</p>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="main-content">
+                <!-- Slicers / Filters Bar -->
+                <section class="filters-bar">
+                    <div class="filter-group">
+                        <label for="filter-date-start"><i class="fa-regular fa-calendar"></i> Start Date</label>
+                        <input type="date" id="filter-date-start" min="2024-01-01" max="2026-05-31">
+                    </div>
+                    <div class="filter-group">
+                        <label for="filter-date-end"><i class="fa-regular fa-calendar"></i> End Date</label>
+                        <input type="date" id="filter-date-end" min="2024-01-01" max="2026-05-31">
+                    </div>
+                    <div class="filter-group">
+                        <label for="filter-region"><i class="fa-solid fa-map-pin"></i> Region</label>
+                        <select id="filter-region">
+                            <option value="All">All Regions</option>
+                            <option value="East">East</option>
+                            <option value="West">West</option>
+                            <option value="Central">Central</option>
+                            <option value="South">South</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filter-category"><i class="fa-solid fa-tags"></i> Category</label>
+                        <select id="filter-category">
+                            <option value="All">All Categories</option>
+                            <option value="Technology">Technology</option>
+                            <option value="Office Supplies">Office Supplies</option>
+                            <option value="Furniture">Furniture</option>
+                        </select>
+                    </div>
+                    <button class="btn-reset" id="btn-reset-filters" title="Reset Filters">
+                        <i class="fa-solid fa-rotate-left"></i> Reset
+                    </button>
+                </section>
+
+                <!-- Dashboard Content Containers -->
+                <!-- PAGE 1: OVERVIEW -->
+                <div class="tab-content active" id="tab-overview">
+                    <!-- KPI Cards Grid -->
+                    <div class="kpi-grid">
+                        <div class="kpi-card" id="kpi-sales">
+                            <div class="kpi-info">
+                                <span class="kpi-title">Total Sales</span>
+                                <span class="kpi-value" id="val-total-sales">$0.00</span>
+                            </div>
+                            <div class="kpi-icon sales-color">
+                                <i class="fa-solid fa-dollar-sign"></i>
+                            </div>
+                        </div>
+                        <div class="kpi-card" id="kpi-profit">
+                            <div class="kpi-info">
+                                <span class="kpi-title">Total Profit</span>
+                                <span class="kpi-value" id="val-total-profit">$0.00</span>
+                                <span class="kpi-meta" id="val-profit-margin">Margin: 0%</span>
+                            </div>
+                            <div class="kpi-icon profit-color">
+                                <i class="fa-solid fa-hand-holding-dollar"></i>
+                            </div>
+                        </div>
+                        <div class="kpi-card" id="kpi-orders">
+                            <div class="kpi-info">
+                                <span class="kpi-title">Total Orders</span>
+                                <span class="kpi-value" id="val-total-orders">0</span>
+                                <span class="kpi-meta" id="val-avg-order-value">AOV: $0.00</span>
+                            </div>
+                            <div class="kpi-icon orders-color">
+                                <i class="fa-solid fa-cart-shopping"></i>
+                            </div>
+                        </div>
+                        <div class="kpi-card" id="kpi-customers">
+                            <div class="kpi-info">
+                                <span class="kpi-title">Unique Customers</span>
+                                <span class="kpi-value" id="val-total-customers">0</span>
+                            </div>
+                            <div class="kpi-icon customers-color">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Overview Visuals Grid -->
+                    <div class="visuals-grid-2">
+                        <div class="visual-container">
+                            <div class="visual-header">
+                                <h3>Sales Trend Over Time</h3>
+                                <p class="visual-desc">Monthly breakdown of historical revenue sales</p>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="chart-sales-trend"></canvas>
+                            </div>
+                        </div>
+                        <div class="visual-container">
+                            <div class="visual-header">
+                                <h3>Sales vs. Profit Comparison</h3>
+                                <p class="visual-desc">Monthly analysis comparing performance and profitability</p>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="chart-profit-vs-sales"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE 2: SALES ANALYSIS -->
+                <div class="tab-content" id="tab-sales">
+                    <div class="visuals-grid-2">
+                        <div class="visual-container">
+                            <div class="visual-header">
+                                <h3>Sales by Product Category</h3>
+                                <p class="visual-desc">Revenue contribution of technology, furniture, and office supplies</p>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="chart-sales-by-category"></canvas>
+                            </div>
+                        </div>
+                        <div class="visual-container">
+                            <div class="visual-header">
+                                <h3>Sales by Geographic Region</h3>
+                                <p class="visual-desc">Regional sales breakdown (West, East, Central, South)</p>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="chart-sales-by-region"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="visuals-grid-2">
+                        <div class="visual-container">
+                            <div class="visual-header">
+                                <h3>Top 10 Products by Sales Volume</h3>
+                                <p class="visual-desc">Highest revenue-generating catalog products</p>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="chart-top-products"></canvas>
+                            </div>
+                        </div>
+                        <div class="visual-container">
+                            <div class="visual-header">
+                                <h3>Monthly Sales Growth & Trend</h3>
+                                <p class="visual-desc">Cumulative area chart showing overall sales trajectory</p>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="chart-monthly-sales-trend"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE 3: CUSTOMER INSIGHTS -->
+                <div class="tab-content" id="tab-customers">
+                    <div class="visuals-grid-1-2">
+                        <div class="visual-container grid-span-1">
+                            <div class="visual-header">
+                                <h3>Customer Segments (Purchase Value)</h3>
+                                <p class="visual-desc">Distribution of customers by lifetime spend</p>
+                            </div>
+                            <div class="chart-wrapper donut-sizing">
+                                <canvas id="chart-customer-segmentation"></canvas>
+                            </div>
+                            <div class="segmentation-legend">
+                                <div class="legend-item"><span class="legend-dot high-val"></span> High Value (Spend > $5,000)</div>
+                                <div class="legend-item"><span class="legend-dot med-val"></span> Med Value (Spend $2,000 - $5,000)</div>
+                                <div class="legend-item"><span class="legend-dot low-val"></span> Low Value (Spend < $2,000)</div>
+                            </div>
+                        </div>
+                        <div class="visual-container grid-span-1">
+                            <div class="visual-header">
+                                <h3>Customer Loyalty Type</h3>
+                                <p class="visual-desc">Repeat purchases vs. One-Time purchasers</p>
+                            </div>
+                            <div class="chart-wrapper pie-sizing">
+                                <canvas id="chart-repeat-vs-onetime"></canvas>
+                            </div>
+                        </div>
+                        <div class="visual-container grid-span-2">
+                            <div class="visual-header">
+                                <h3>Top Customers by Purchase Value</h3>
+                                <p class="visual-desc">Key client accounts ranked by sales contribution</p>
+                            </div>
+                            <div class="table-wrapper">
+                                <table class="dashboard-table" id="table-top-customers">
+                                    <thead>
+                                        <tr>
+                                            <th>Rank</th>
+                                            <th>Customer ID</th>
+                                            <th>Customer Name</th>
+                                            <th>Order Count</th>
+                                            <th>Sales Amount</th>
+                                            <th>Total Profit</th>
+                                            <th>Segment</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Dynamically generated rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE 4: PRODUCT PERFORMANCE -->
+                <div class="tab-content" id="tab-products">
+                    <div class="visuals-grid-2">
+                        <div class="visual-container">
+                            <div class="visual-header">
+                                <h3>Best Performing Products</h3>
+                                <p class="visual-desc">Top 5 products by overall revenue</p>
+                            </div>
+                            <div class="table-wrapper">
+                                <table class="dashboard-table product-perf-table" id="table-best-products">
+                                    <thead>
+                                        <tr>
+                                            <th>Product Name</th>
+                                            <th>Category</th>
+                                            <th>Quantity Sold</th>
+                                            <th>Revenue</th>
+                                            <th>Profit Margin</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Dynamically generated rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="visual-container">
+                            <div class="visual-header">
+                                <h3>Least Performing Products</h3>
+                                <p class="visual-desc">Bottom 5 products by overall revenue</p>
+                            </div>
+                            <div class="table-wrapper">
+                                <table class="dashboard-table product-perf-table" id="table-worst-products">
+                                    <thead>
+                                        <tr>
+                                            <th>Product Name</th>
+                                            <th>Category</th>
+                                            <th>Quantity Sold</th>
+                                            <th>Revenue</th>
+                                            <th>Profit Margin</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Dynamically generated rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="visuals-grid-1-2">
+                        <div class="visual-container grid-span-1">
+                            <div class="visual-header">
+                                <h3>Product Category Contribution</h3>
+                                <p class="visual-desc">Share of total transactions by Category</p>
+                            </div>
+                            <div class="chart-wrapper pie-sizing">
+                                <canvas id="chart-product-category-share"></canvas>
+                            </div>
+                        </div>
+                        <div class="visual-container grid-span-2">
+                            <div class="visual-header">
+                                <h3>Key Business Performance Insights</h3>
+                                <p class="visual-desc">Automated analysis of the active filtered dataset</p>
+                            </div>
+                            <div class="insights-box">
+                                <div class="insight-item">
+                                    <div class="insight-icon"><i class="fa-solid fa-crown text-gold"></i></div>
+                                    <div class="insight-text">
+                                        <strong>Best Performing Product Category:</strong> 
+                                        <span id="ins-best-category">-</span>
+                                    </div>
+                                </div>
+                                <div class="insight-item">
+                                    <div class="insight-icon"><i class="fa-solid fa-calendar-check text-blue"></i></div>
+                                    <div class="insight-text">
+                                        <strong>Highest Revenue Month:</strong> 
+                                        <span id="ins-best-month">-</span>
+                                    </div>
+                                </div>
+                                <div class="insight-item">
+                                    <div class="insight-icon"><i class="fa-solid fa-users-line text-purple"></i></div>
+                                    <div class="insight-text">
+                                        <strong>Top Customer Segment:</strong> 
+                                        <span id="ins-top-segment">-</span>
+                                    </div>
+                                </div>
+                                <div class="insight-item">
+                                    <div class="insight-icon"><i class="fa-solid fa-earth-americas text-green"></i></div>
+                                    <div class="insight-text">
+                                        <strong>Region with Highest Sales:</strong> 
+                                        <span id="ins-best-region">-</span>
+                                    </div>
+                                </div>
+                                <div class="insight-item summary-item">
+                                    <div class="insight-icon"><i class="fa-solid fa-lightbulb text-orange"></i></div>
+                                    <div class="insight-text">
+                                        <strong>Executive Summary:</strong>
+                                        <span id="ins-summary">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <!-- Core Application Logic -->
+    <script src="app.js"></script>
+</body>
+</html>
